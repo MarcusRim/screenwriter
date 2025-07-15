@@ -1,13 +1,14 @@
 // src/App.js
 import React, { useState } from 'react';
 import MenuBar from './components/MenuBar';
-import TextEditor from './components/TextEditor';
+import ScreenplayEditor from './components/ScreenplayEditor';
 import { Flex, Box } from '@chakra-ui/react';
 
 export default function App() {
   const [content, setContent] = useState(''); // initialize variables and function
 
   /*
+  * handleSave
   * Function that logs the current content in the text editor
   */
   const handleSave = () => {
@@ -16,9 +17,18 @@ export default function App() {
   return (
     <Flex direction = "column" height = "100vh">
       <MenuBar onSave = {handleSave} />
-      <Box flex = "1">
-        <TextEditor value = {content} onChange = {setContent} />
-      </Box>
+      <Flex
+        flex = "1"
+        overflowY = "auto"
+        justify = "center"
+        bg = "gray.100"
+        py = {4}
+      >
+        <ScreenplayEditor
+          value = {content}
+          onChange = {setContent}
+        />
+      </Flex>
     </Flex>
   );
 }
