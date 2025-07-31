@@ -1,41 +1,58 @@
 // src/components/ScreenplayEditor.jsx
-import React, { useState, useEffect } from 'react';
-import { Box, VStack } from '@chakra-ui/react';
-import { Page } from './Page';
+import React, { useState } from 'react'
+import { Box } from '@chakra-ui/react';
+import { useEditor, EditorContent, EditorProvider } from '@tiptap/react';
+//import { Pagination } from 'tiptap-pagination-breaks';
+import { CustomPagination } from '../extensions/CustomPagination';
+import StarterKit from '@tiptap/starter-kit';
+import './screenplay.css';
 
 export default function ScreenplayEditor({
   value, onChange
 }) {
-  const [pageRefs, setPageRefs] = useState([React.createRef()]);
-  // whenever 'value' changes
-  useEffect(() => {
-    // this needs to call a function that will separate value into chunks for pages
-    console.log(value)
-  }, [value]);
+  const PAGE_HEIGHT = 1056 // 11 in
+  const [heightPx, setHeightPx] = useState(PAGE_HEIGHT)
 
-  const handleInput = () => {
-    const lastIndex = pageRefs.length - 1;
-    const lastEl = pageRefs[lastIndex].current;
-    if (lastEl && lastEl.scrollHeight > lastEl.clientHeight) {
-      setPageRefs(prev => [...prev, React.createRef()]);
-      return;
-    }
-    // serialize all pages back into one string
-    const text = pageRefs
-      .map(r => r.current?.innerText || '')
-      .join('\n');
-    onChange(text);
-  };
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      CustomPagination.configure({
+        pageHeight: PAGE_HEIGHT, // 11 in
+        pageWidth: 816,   // 8.5 in
+        pageMargin: 96,   // 1 in
+      }),
+    ],
+    content: value,
+    editorProps: {
+      attributes: {
+        class: 'screenplay-editor',
+      },
+    },
+    onUpdate: ({editor}) => {
+      onChange(editor.getText());
+      const totalHeight = editor.view.dom.scrollHeight
+      const pages = Math.ceil(totalHeight / PAGE_HEIGHT)
+      const newHeight = pages * PAGE_HEIGHT
+      setHeightPx(newHeight)
+      editor.view.dom.style.height = '${newHeight}px'
+      console.log('heightPX = ', heightPx)
+    },
+  });
+  
+  // don't render until editor exists
+  if (!editor) {
+    return null;
+  }
 
   return (
-  <VStack align="center">
-    {pageRefs.map((ref, idx) => (
-      <Page
-        key = {idx}
-        ref = {ref}
-        onInput = {handleInput}
+    <Box className="screenplay-container">
+      <EditorContent 
+        editor = {editor} 
+        style = {{
+          height: '${heightPx}px',
+          overflow: 'visible',
+        }}
       />
-    ))}
-  </VStack>
+    </Box>
   );
 }

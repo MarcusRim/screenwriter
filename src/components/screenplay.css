@@ -1,0 +1,23 @@
+/* screenplay.css */
+
+/* 8.5″×11″ page with 1″ margins (plus the larger left margin for binding) */
+.screenplay-editor {
+  width:        8.5in;
+  min-height:   11in;
+  padding:      1in 1in 1in 1.5in;
+  border:       2px solid #496b24;
+  box-shadow:   0 2px 6px rgba(0,0,0,0.1);
+  overflow:     auto;
+  white-space:  pre-wrap;
+  word-break:   break-word;
+  font-family:  'Courier New', monospace;
+  line-height:  1;
+  font-size:    12pt;
+}
+
+/* Container for the screenplay editor */
+.screenplay-container {
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow-y: auto; 
+}
