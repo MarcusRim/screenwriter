@@ -1,23 +1,24 @@
 // src/components/ScreenplayEditor.jsx
-import React, { useState } from 'react'
+
+import './screenplay.css';
 import { Box } from '@chakra-ui/react';
 import { useEditor, EditorContent } from '@tiptap/react';
-//import { Pagination } from 'tiptap-pagination-breaks';
-//import { CustomPagination } from '../extensions/CustomPagination';
-import PaginationExtension, { 
-  PageNode, HeaderFooterNode, BodyNode }
+import PaginationExtension, { PageNode, HeaderFooterNode, BodyNode }
   from 'tiptap-extension-pagination';
 import StarterKit from '@tiptap/starter-kit';
-import './screenplay.css';
+import { HardBreak } from '@tiptap/extension-hard-break';
+import { Action, SceneHeading, Character, Parenthetical,
+  Dialogue, Transition, Shot } from '../extensions/ScreenplayNodes';
 
 export default function ScreenplayEditor({
   value, onChange
 }) {
-  const PAGE_HEIGHT = 1056 // 11 in
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        paragraph: { HTMLAttributes: {class: 'action'}}
+      }),
       PaginationExtension.configure({
         defaultPaperSize: 'letter',
         pageAmendmentOptions: {
@@ -28,6 +29,14 @@ export default function ScreenplayEditor({
       PageNode,
       HeaderFooterNode,
       BodyNode,
+      HardBreak,
+      Action,
+      SceneHeading,
+      Character,
+      Parenthetical,
+      Dialogue,
+      Transition,
+      Shot,
     ],
     content: value,
     editorProps: {
@@ -49,11 +58,8 @@ export default function ScreenplayEditor({
     <Box
       className="screenplay-container"
       bg="gray.100"
-      p="8"
       h="100vh"
       overflowY="auto"
-      mx="auto"
-      maxW="calc(8.5in + 4rem)"
     >
       <EditorContent
         editor={editor}

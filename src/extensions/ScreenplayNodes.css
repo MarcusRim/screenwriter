@@ -1,0 +1,39 @@
+/* ScreenplayNodes.css */
+
+.action {
+    color:black;
+}
+
+.scene-heading {
+    color:red;
+    text-transform: uppercase;
+}
+
+.character {
+    color: orange;
+    margin-left: 2.3in;
+    margin-right: 1.3in;
+    text-transform: uppercase;
+}
+
+.parenthetical {
+    color: olive;
+    margin-left: 1.6in;
+    margin-right: 1.3in;
+}
+
+.dialogue {
+    color: blue;
+    margin-left: 1in;
+    margin-right: 1.3in;
+}
+
+.transition {
+    color: indigo;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.shot {
+    text-transform: uppercase;
+}
